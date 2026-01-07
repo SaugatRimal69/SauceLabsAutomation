@@ -21,7 +21,7 @@ service = Service(r"D:\Chromedriver\chromedriver-win64\chromedriver.exe")
 
 driver = webdriver.Chrome(service=service, options= chrome_options)
 
-driver.get('https://sauce-demo.myshopify.com/account/login')
+driver.get('https://sauce-demo.myshopify.com')
 
 time.sleep(5)
 
@@ -91,26 +91,54 @@ time.sleep(2)
 # print("Create Vayo")
 
 #Verify registration page opens properly by checking the URL
-if "login" in driver.current_url:
-    print("Login got loaded successfully")
+# if "login" in driver.current_url:
+#     print("Login got loaded successfully")
+# else:
+#     print("Warning: Login form may not have loaded properly", driver.current_url)
+# time.sleep(2)
+
+# Email= "//input[@id='customer_email']"
+# send_keys_to_element(driver, Email, "rasputrump911@gmail.com")
+# print("Email is entered")
+#
+# time.sleep(2)
+#
+# Password = "//input[@id='customer_password']"
+# send_keys_to_element(driver, Password, "abcde")
+# print("Password haliyo")
+#
+# time.sleep(2)
+#
+# SignIn = "//input[@value='Sign In']"
+# click_element(driver, SignIn)
+# print("Click vayo")
+#
+# time.sleep(30)
+
+
+GrayJacket = "//h3[normalize-space()='Grey jacket']"
+click_element(driver, GrayJacket)
+print("Gray jacket was selected")
+
+time.sleep(2)
+
+if "gray-jacket" in driver.current_url:
+    print("Gray jacket kinna pugiyo")
 else:
-    print("Warning: Login form may not have loaded properly", driver.current_url)
-time.sleep(2)
+    print("Kinna pugiyena", driver.current_url)
 
-Email= "//input[@id='customer_email']"
-send_keys_to_element(driver, Email, "testuser_1767783652@gmail.com")
-print("Email is entered")
-
-time.sleep(2)
-
-Password = "//input[@id='customer_password']"
-send_keys_to_element(driver, Password, "abc")
-print("Password haliyo")
+AddToCart = "//input[@id='add']"
+click_element(driver, AddToCart)
+print("Cart ma gayo")
 
 time.sleep(2)
 
-SignIn = "//input[@value='Sign In']"
-click_element(driver, SignIn)
-print("Click vayo")
+MyCart = "//a[@class='toggle-drawer cart desktop ']"
+click_element(driver, MyCart)
+print("my cart click vayo")
 
-time.sleep(30)
+time.sleep(2)
+CheckOut = "//input[@value='Check Out']"
+clear(driver, CheckOut)
+print ("CheckOut Vayo")
+time.sleep(2)
