@@ -49,71 +49,10 @@ def clear(driver,xpath):
     element.clear()
 
 
-# SignUp= "//div[@class='seven columns offset-by-one desktop']//a[@id='customer_register_link']"
-# click_element(driver, SignUp)
-# print("SignUp is Clicker")
 
-
-#Wait for navigation to registration page
 time.sleep(2)
 
-#Verify registration page opens properly by checking the URL
-# if "register" in driver.current_url:
-#     print("Registration gotm loaded successfully")
-# else:
-#     print("Warning: Registration form may not have loaded properly", driver.current_url)
 
-#
-# FirstName = "//input[@id='first_name']"
-# send_keys_to_element(driver, FirstName, "Saugat")
-# print("First Name entered")
-#
-#
-#
-#
-# LastName= "//input[@id='last_name']"
-# send_keys_to_element(driver, LastName, "Rimal")
-# print("Last Name entered")
-#
-# EmailAddress = "//input[@id='email']"
-#
-# Email = f"testuser_{int(time.time())}@gmail.com" #f vaneko formatted string
-# send_keys_to_element(driver, EmailAddress, Email)
-# print("Email entered", Email)
-#
-#
-# Password= "//input[@id='password']"
-# send_keys_to_element(driver, Password, "abc")
-# print("Password Entered")
-#
-# Create = "//input[@value='Create']"
-# click_element(driver, Create)
-# print("Create Vayo")
-
-#Verify registration page opens properly by checking the URL
-# if "login" in driver.current_url:
-#     print("Login got loaded successfully")
-# else:
-#     print("Warning: Login form may not have loaded properly", driver.current_url)
-# time.sleep(2)
-
-# Email= "//input[@id='customer_email']"
-# send_keys_to_element(driver, Email, "rasputrump911@gmail.com")
-# print("Email is entered")
-#
-# time.sleep(2)
-#
-# Password = "//input[@id='customer_password']"
-# send_keys_to_element(driver, Password, "abcde")
-# print("Password haliyo")
-#
-# time.sleep(2)
-#
-# SignIn = "//input[@value='Sign In']"
-# click_element(driver, SignIn)
-# print("Click vayo")
-#
-# time.sleep(30)
 
 
 GrayJacket = "//h3[normalize-space()='Grey jacket']"
