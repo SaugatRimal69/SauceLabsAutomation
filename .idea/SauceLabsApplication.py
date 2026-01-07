@@ -95,19 +95,19 @@ if "login" in driver.current_url:
     print("Login got loaded successfully")
 else:
     print("Warning: Login form may not have loaded properly", driver.current_url)
-time.sleep(5)
+time.sleep(2)
 
 Email= "//input[@id='customer_email']"
 send_keys_to_element(driver, Email, "testuser_1767783652@gmail.com")
 print("Email is entered")
 
-time.sleep(5)
+time.sleep(2)
 
 Password = "//input[@id='customer_password']"
 send_keys_to_element(driver, Password, "abc")
 print("Password haliyo")
 
-time.sleep(5)
+time.sleep(2)
 
 SignIn = "//input[@value='Sign In']"
 click_element(driver, SignIn)
