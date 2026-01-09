@@ -72,11 +72,20 @@ print("Cart ma gayo")
 
 time.sleep(2)
 
+
+driver.refresh()
+
+time.sleep(5)
+
 MyCart = "//a[@class='toggle-drawer cart desktop ']"
 click_element(driver, MyCart)
 print("my cart click vayo")
 
-time.sleep(2)
+
+
+
+
+time.sleep(5)
 CheckOut = "//input[@value='Check Out']"
 clear(driver, CheckOut)
 print ("CheckOut Vayo")

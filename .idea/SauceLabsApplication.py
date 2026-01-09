@@ -42,7 +42,7 @@ def click_element(driver,xpath):
 def send_keys_to_element(driver,xpath,keys):
     element = driver.find_element(By.XPATH,xpath)
     element.clear()
-    element.send_keys()
+    element.send_keys(keys)
 
 def clear(driver,xpath):
     element= driver.find_element(By.XPATH,xpath)
@@ -97,20 +97,129 @@ else:
     print("Warning: Login form may not have loaded properly", driver.current_url)
 time.sleep(2)
 
-Email= "//input[@id='customer_email']"
-send_keys_to_element(driver, Email, "testuser_1767783652@gmail.com")
-print("Email is entered")
 
-time.sleep(2)
 
-Password = "//input[@id='customer_password']"
-send_keys_to_element(driver, Password, "abc")
-print("Password haliyo")
+login_search_data = [
+    {
+        "email": "rasputrump911@gmail.com",
+        "password": "abcdefgh",
+        "search_term": "Grey Jacket",
+        "path":"//h3[normalize-space()='Grey jacket']"
+    },
 
-time.sleep(2)
+    {
+        "email": "jay123@gmail.com",
+        "password": "abcdefgh",
+        "search_term": "Black heels",
+        "path":"//h3[normalize-space()='Black heels']"
 
-SignIn = "//input[@value='Sign In']"
-click_element(driver, SignIn)
-print("Click vayo")
+    },
+    {
+        "email": "jay1234@gmail.com",
+        "password": "abcdefgh",
+        "search_term": "Brown Shades",
+        "path":"//h3[normalize-space()='Brown Shades']"
+    }
 
-time.sleep(30)
+
+]
+
+
+login_search_data2 = [
+    {
+        # "email": "rasputrump911@gmail.com",
+        # "password": "abcdefgh",
+        "search_term": "Grey Jacket",
+        "path":"//h3[normalize-space()='Grey jacket']"
+    },
+
+    {
+        # "email": "jay123@gmail.com",
+        # "password": "abcdefgh",
+        "search_term": "Black heels",
+        "path":"//h3[normalize-space()='Black heels']"
+
+    },
+    {
+        # "email": "jay1234@gmail.com",
+        # "password": "abcdefgh",
+        "search_term": "Brown Shades",
+        "path":"//h3[normalize-space()='Brown Shades']"
+    }
+
+
+]
+
+#
+# for i, user_data in enumerate(login_search_data):
+#     driver.get('https://sauce-demo.myshopify.com/')
+#
+#
+#
+# login_link="//a[@id='customer_login_link']"
+# click_element(driver,login_link)
+# print("Clicked on Log In Link")
+#
+#
+#
+#
+# Email= "//input[@id='customer_email']"
+# send_keys_to_element(driver, Email, user_data["email"])
+# print(f"Email entered: {user_data['email']}")
+#
+# time.sleep(2)
+#
+# Password = "//input[@id='customer_password']"
+# send_keys_to_element(driver, Password, user_data["password"])
+# print(f"Password entered: {user_data['password']}")
+#
+# time.sleep(2)
+#
+# SignIn = "//input[@value='Sign In']"
+# click_element(driver, SignIn)
+# print("Click vayo")
+#
+# time.sleep(30)
+#
+
+# GreyJacket="//img[@alt='Grey jacket']"
+# BrownShades="//img[@alt='Bronze sandals']"
+# BlackHeels="//img[@alt='Black heels']"
+SearchButton = "//input[@id='search-field']"
+checkout="//a[normalize-space()='Check Out']"
+greypath="//h3[normalize-space()='Grey jacket']"
+SearchButton2 = "//input[@id='search-submit']"
+addtocart="//input[@id='add']"
+# for i, user_data in enumerate(login_search_data):
+for i, user_data in enumerate(login_search_data2):
+    driver.get('https://sauce-demo.myshopify.com/')
+
+
+    click_element(driver, SearchButton)
+    print("Search click vayo")
+    time.sleep(2)
+    send_keys_to_element(driver, SearchButton, user_data['search_term'])
+    print(f"Search vako kura {user_data['search_term']}")
+    time.sleep(2)
+    click_element(driver, SearchButton2)
+    time.sleep(2)
+    click_element(driver,user_data['path'])
+    time.sleep(2)
+    click_element(driver,addtocart)
+    time.sleep(2)
+    click_element(driver,checkout)
+
+
+
+
+
+
+    # print("Search click vayo")
+    # click_element(driver, user_data['path'])
+    # print("Link ni click vayo")
+    time.sleep(2)
+
+
+
+
+
