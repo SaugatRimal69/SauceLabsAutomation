@@ -6,8 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import time
-
-
+import pytest
+import allure
 
 
 chrome_options = Options()
@@ -34,12 +34,15 @@ time.sleep(5)
 # driver.find_element(By.XPATH, UserName).send_keys("ramshyam")
 
 
+@allure.step("Click on element with xpath: {xpath}")
 
-def click_element(driver,xpath):
+def test_click_element(driver,xpath):
     element= driver.find_element(By.XPATH,xpath)
     element.click()
 
-def send_keys_to_element(driver,xpath,keys):
+@allure.step("Send keys '{keys}' on element with xpath: {xpath}")
+
+def test_send_keys_to_element(driver,xpath,keys):
     element = driver.find_element(By.XPATH,xpath)
     element.clear()
     element.send_keys(keys)
@@ -91,11 +94,11 @@ time.sleep(2)
 # print("Create Vayo")
 
 #Verify registration page opens properly by checking the URL
-if "login" in driver.current_url:
-    print("Login got loaded successfully")
-else:
-    print("Warning: Login form may not have loaded properly", driver.current_url)
-time.sleep(2)
+# if "login" in driver.current_url:
+#     print("Login got loaded successfully")
+# else:
+#     print("Warning: Login form may not have loaded properly", driver.current_url)
+# time.sleep(2)
 
 
 
@@ -156,35 +159,35 @@ login_search_data2 = [
 #
 #
 #
-# login_link="//a[@id='customer_login_link']"
+login_link="//a[@id='customer_login_link']"
 # click_element(driver,login_link)
 # print("Clicked on Log In Link")
 #
 #
 #
 #
-# Email= "//input[@id='customer_email']"
+Email= "//input[@id='customer_email']"
 # send_keys_to_element(driver, Email, user_data["email"])
 # print(f"Email entered: {user_data['email']}")
 #
 # time.sleep(2)
 #
-# Password = "//input[@id='customer_password']"
+Password = "//input[@id='customer_password']"
 # send_keys_to_element(driver, Password, user_data["password"])
 # print(f"Password entered: {user_data['password']}")
 #
 # time.sleep(2)
 #
-# SignIn = "//input[@value='Sign In']"
+SignIn = "//input[@value='Sign In']"
 # click_element(driver, SignIn)
 # print("Click vayo")
 #
 # time.sleep(30)
 #
 
-# GreyJacket="//img[@alt='Grey jacket']"
-# BrownShades="//img[@alt='Bronze sandals']"
-# BlackHeels="//img[@alt='Black heels']"
+GreyJacket="//img[@alt='Grey jacket']"
+BrownShades="//img[@alt='Bronze sandals']"
+BlackHeels="//img[@alt='Black heels']"
 SearchButton = "//input[@id='search-field']"
 checkout="//a[normalize-space()='Check Out']"
 greypath="//h3[normalize-space()='Grey jacket']"
@@ -195,31 +198,80 @@ for i, user_data in enumerate(login_search_data2):
     driver.get('https://sauce-demo.myshopify.com/')
 
 
-    click_element(driver, SearchButton)
+    test_click_element(driver, SearchButton)
     print("Search click vayo")
     time.sleep(2)
-    send_keys_to_element(driver, SearchButton, user_data['search_term'])
+    test_send_keys_to_element(driver, SearchButton, user_data['search_term'])
     print(f"Search vako kura {user_data['search_term']}")
     time.sleep(2)
-    click_element(driver, SearchButton2)
+    test_click_element(driver, SearchButton2)
     time.sleep(2)
-    click_element(driver,user_data['path'])
+    test_click_element(driver,user_data['path'])
     time.sleep(2)
-    click_element(driver,addtocart)
+    test_click_element(driver,addtocart)
     time.sleep(2)
-    click_element(driver,checkout)
+    test_click_element(driver,checkout)
 
 
 
 
 
-
+    #
     # print("Search click vayo")
     # click_element(driver, user_data['path'])
-    # print("Link ni click vayo")
+    print("Link ni click vayo")
     time.sleep(2)
 
 
+# About_Us = "//div[@class='seven columns offset-by-one desktop']//a[normalize-space()='About Us']"
+# time.sleep(2)
+# click_element(driver, About_Us)
+# print("Click vayo")
+# time.sleep(2)
+#
+#
+# if "about us" in driver.current_url:
+#     print("About Us got loaded successfully")
+# else:
+#     print("Warning: About Us form may not have loaded properly", driver.current_url)
+# time.sleep(2)
+#
+#
+# Search="//div[@class='seven columns offset-by-one desktop']//a[normalize-space()='Search']"
+# click_element(driver, Search)
+#
+# time.sleep(2)
+# if "search" in driver.current_url:
+#     print("Search got loaded successfully")
+# else:
+#     print("Warning: Search form may not have loaded properly", driver.current_url)
+# time.sleep(2)
+#
+#
+# time.sleep(2)
+# click_element(driver,login_link)
+# send_keys_to_element(driver,Email, "rasputrump911@gmail.com" )
+# print("Email click vayo")
+# time.sleep(2)
+# send_keys_to_element(driver, Password, "abcdefgh")
+# time.sleep(2)
+# print("password click vayo")
+# time.sleep(2)
+# click_element(driver, SignIn)
+# time.sleep(30)
+#
+#
+#
+#
+# # Accounts12 = "//a[normalize-space()='My Account']"
+# # click_element(driver, Accounts12)
+# # print("Accounts click vayo")
+# # if "account" in driver.current_url:
+# #     print("Accounts got loaded successfully")
+# # else:
+# #     print("Warning: Accounts form may not have loaded properly", driver.current_url)
+# # time.sleep(2)
 
 
 
+driver.quit()
