@@ -1,75 +1,100 @@
+import os
+import time
+import pytest
+import allure
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-import time
-import pytest
-import allure
 
-# Helper functions for Allure steps
+# --- Helper functions for Allure steps ---
+#base class
 @allure.step("Click on element with xpath: {xpath}")
 def click_element(driver, xpath):
-    element = driver.find_element(By.XPATH, xpath)
+    wait = WebDriverWait(driver, 10)
+    element = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
     element.click()
-
+#baseclass
 @allure.step("Send keys '{keys}' on element with xpath: {xpath}")
 def send_keys_to_element(driver, xpath, keys):
-    element = driver.find_element(By.XPATH, xpath)
+    wait = WebDriverWait(driver, 10)
+    element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
     element.clear()
     element.send_keys(keys)
+#base class
+def take_screenshot(driver, name, timestamp=True):
+    screenshots_dir = "screenshots"
+    if not os.path.exists(screenshots_dir):
+        os.makedirs(screenshots_dir)
+    if timestamp:
+        timestamp = int(time.time())
+        filename = f"{screenshots_dir}/{name}_{timestamp}.png"
+    else:
+        filename = f"{screenshots_dir}/{name}.png"
+    driver.save_screenshot(filename)
 
-# --- THE FIX: Wrap your entire logic in ONE test function ---
-def test_sauce_demo_search():
+    allure.attach.file(
+        filename,
+        name=name,
+        attachment_type=allure.attachment_type.PNG
+    )
+
+# --- Pytest Fixture for Driver Management ---
+
+@pytest.fixture
+#baseclass
+def driver():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
-
-    # location of chromedriver
+    # Update this path to your actual chromedriver location
     service = Service(r"D:\Chromedriver\chromedriver-win64\chromedriver.exe")
 
-    # initialize the driver
     driver = webdriver.Chrome(service=service, options=chrome_options)
+    yield driver
+    driver.quit()
+
+# --- The Test Case ---
+
+@allure.feature("Shopping Cart")
+@allure.story("Search and Add to Cart")
+@pytest.mark.parametrize("user_data", [
+    {"search_term": "Grey Jacket", "path": "//h3[normalize-space()='Grey jacket']"},
+    {"search_term": "Black heels", "path": "//h3[normalize-space()='Black heels']"},
+    {"search_term": "Brown Shades", "path": "//h3[normalize-space()='Brown Shades']"}
+])
+def test_sauce_demo_search(driver, user_data):
+    """
+    This test runs separately for each item in the parametrization list.
+    """
+    # Selectors
+    SEARCH_FIELD = "//input[@id='search-field']"
+    SEARCH_SUBMIT = "//input[@id='search-submit']"
+    ADD_TO_CART = "//input[@id='add']"
+    CHECKOUT_BTN = "//a[normalize-space()='Check Out']"
 
     try:
-        driver.get('https://sauce-demo.myshopify.com/account/login')
-        time.sleep(5)
-
-        login_search_data2 = [
-            {"search_term": "Grey Jacket", "path": "//h3[normalize-space()='Grey jacket']"},
-            {"search_term": "Black heels", "path": "//h3[normalize-space()='Black heels']"},
-            {"search_term": "Brown Shades", "path": "//h3[normalize-space()='Brown Shades']"}
-        ]
-
-        SearchButton = "//input[@id='search-field']"
-        checkout = "//a[normalize-space()='Check Out']"
-        SearchButton2 = "//input[@id='search-submit']"
-        addtocart = "//input[@id='add']"
-
-        for i, user_data in enumerate(login_search_data2):
+        with allure.step(f"Testing search for: {user_data['search_term']}"):
             driver.get('https://sauce-demo.myshopify.com/')
 
-            click_element(driver, SearchButton)
-            print("Search click vayo")
-            time.sleep(2)
+            # Perform Search
+            click_element(driver, SEARCH_FIELD)
+            send_keys_to_element(driver, SEARCH_FIELD, user_data['search_term'])
+            click_element(driver, SEARCH_SUBMIT)
 
-            send_keys_to_element(driver, SearchButton, user_data['search_term'])
-            print(f"Search vako kura {user_data['search_term']}")
-            time.sleep(2)
-
-            click_element(driver, SearchButton2)
-            time.sleep(2)
-
+            # Select Product
             click_element(driver, user_data['path'])
-            time.sleep(2)
 
-            click_element(driver, addtocart)
-            time.sleep(2)
+            # Add to Cart
+            click_element(driver, ADD_TO_CART)
 
-            click_element(driver, checkout)
-            print("Link ni click vayo")
-            time.sleep(2)
+            # Go to Checkout
+            click_element(driver, CHECKOUT_BTN)
 
-    finally:
-        driver.quit()
+            # Verify result with a screenshot
+            take_screenshot(driver, f"Result_{user_data['search_term'].replace(' ', '_')}")
+
+    except Exception as e:
+        take_screenshot(driver, "Failure_Screenshot")
+        pytest.fail(f"Test failed for {user_data['search_term']}: {e}")
